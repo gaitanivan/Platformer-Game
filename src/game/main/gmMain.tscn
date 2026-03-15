@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://d1gmi40tbcxaq"]
+
+[ext_resource type="Script" uid="uid://ddaohwmbjvuls" path="res://game/main/gmMain.gd" id="1_tmqiq"]
+[ext_resource type="PackedScene" uid="uid://ctyrxauyky5nx" path="res://game/main/gmTransitions.tscn" id="2_kcdcx"]
+
+[node name="Main" type="Node2D" unique_id=124467112]
+texture_filter = 1
+script = ExtResource("1_tmqiq")
+
+[node name="ModulesContainer" type="Node2D" parent="." unique_id=204469901]
+unique_name_in_owner = true
+
+[node name="Transitions" parent="." unique_id=838061092 instance=ExtResource("2_kcdcx")]
+unique_name_in_owner = true

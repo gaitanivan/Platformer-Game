@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://ctyrxauyky5nx"]
+
+[ext_resource type="Script" uid="uid://b4pxwrqfjuu8t" path="res://game/main/gmTransitions.gd" id="1_0gj3s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0gj3s"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Transitions" type="CanvasLayer" unique_id=642613496]
+layer = 1000
+script = ExtResource("1_0gj3s")
+
+[node name="Tran_01" type="PanelContainer" parent="." unique_id=1881901533]
+unique_name_in_owner = true
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0gj3s")

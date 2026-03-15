@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://ctnmwppedeqm5"]
+
+[ext_resource type="Script" uid="uid://cnu4dxc6af4oc" path="res://game/modules/module_world/gmModuleWorld.gd" id="1_dvqi6"]
+[ext_resource type="PackedScene" uid="uid://de8k8b6e00rat" path="res://game/characters/hero/gmHero.tscn" id="2_ayhjt"]
+
+[node name="ModuleWorld" type="Node2D" unique_id=868447014]
+script = ExtResource("1_dvqi6")
+
+[node name="LevelContainer" type="Node2D" parent="." unique_id=1241847369]
+unique_name_in_owner = true
+
+[node name="CharacterBase" parent="." unique_id=507527109 instance=ExtResource("2_ayhjt")]
+position = Vector2(416, 128)
