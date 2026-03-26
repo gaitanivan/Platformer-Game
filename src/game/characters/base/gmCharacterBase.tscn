@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://lo8nmq3vuigj" path="res://game/characters/base/gmCharacterBase.gd" id="1_rqsj5"]
 
 [node name="CharacterBase" type="CharacterBody2D" unique_id=507527109]
+floor_snap_length = 5.0
 script = ExtResource("1_rqsj5")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=315788916]

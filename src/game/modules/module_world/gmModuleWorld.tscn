@@ -10,4 +10,4 @@ script = ExtResource("1_dvqi6")
 unique_name_in_owner = true
 
 [node name="CharacterBase" parent="." unique_id=507527109 instance=ExtResource("2_ayhjt")]
-position = Vector2(416, 128)
+position = Vector2(48, 528)

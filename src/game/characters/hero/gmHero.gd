@@ -5,7 +5,7 @@ extends gmCharacterBase
 
 #region Vars
 ## Mantiene referencia al control del jugador.
-var _jp_controller_ : gmJoyPadController
+var jp_controller : gmJoyPadController
 #endregion
 
 
@@ -14,16 +14,18 @@ func _ready() -> void:
 	# Ejecutar los comandos de la clase padre.
 	super()
 	# Inicializaciones.
-	_jp_controller_ = gmJoyPadController.new()
+	jp_controller = gmJoyPadController.new()
 	var __initial_state := gmStHeroIdle.new(self)
 	sm.change_state(__initial_state)
 	start_gravity()
-	start_speed_x(64)
+	start_jump_height_max(32)
+	start_speed_x(128)
 
 func _physics_process(_delta: float) -> void:
-	_jp_controller_.process(_delta)
-	dir_movement = _jp_controller_.dir
+	jp_controller.process(_delta)
+	dir_movement = jp_controller.dir
 	super(_delta)
+	$Label.text = sm._current_state_.name
 #endregion
 
 

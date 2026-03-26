@@ -12,14 +12,20 @@ enum dirs_face {
 
 ## Mantiene la referencia al AnimationPlayer del personaje.
 var animated_sprite : AnimatedSprite2D
+## Determina si el personaje puede hacer doble salto.
+var can_double_jump : bool
 ## Mantiene la referencia al CollisionShape2D del personaje.
 var collision_shape : CollisionShape2D
+## Determina si se debe desplazar el personaje a una velocidad constante.
+var constant_velocity : Vector2
 ## Determina la dirección en la que mira el personaje.
 var dir_face : dirs_face = dirs_face.RIGHT
 ## Determina la dirección en la que se moverá el personaje.
 var dir_movement : Vector2
 ## Mantiene el valor de la gravedad que usa el personaje.
 var gravity : float
+## Mantiene el valor de la altura máxima que alcanza el personaje al saltar.
+var jump_height_max : float
 ## Mantiene la referencia a la máquina de estados que usa el personaje.
 var sm : gmStateMachineBase
 ## Mantiene el valor de la velocidad en X que usa el personaje.
@@ -27,6 +33,8 @@ var speed_x : float
 
 ## Mantiene el valor de la gravedad base que usa el personaje.
 var _gravity_base_ : float
+## Mantiene el valor de la altura máxima que alcanza el personaje al saltar.
+var _jump_height_max_base_ : float
 ## Mantiene el valor de la velocidad base en X que usa el personaje.
 var _speed_x_base_ : float
 #endregion
@@ -51,9 +59,15 @@ func _physics_process(_delta: float) -> void:
 
 	# Calcular movimientos.
 	# Aplicar la gravedad.
-	velocity.y += gravity * _delta
+	if constant_velocity.y != 0:
+		velocity.y = constant_velocity.y
+	else:
+		velocity.y += gravity * _delta
 	# Aplicar movimiento horizontal.
-	velocity.x = dir_movement.x * speed_x
+	if constant_velocity.x != 0:
+		velocity.x = constant_velocity.x
+	else:
+		velocity.x = dir_movement.x * speed_x
 
 	# Mover el personaje.
 	move_and_slide()
@@ -61,6 +75,19 @@ func _physics_process(_delta: float) -> void:
 
 
 #region Functions
+## Función con la que se hace saltar al personaje.
+func do_jump() -> void:
+	velocity.y = -get_jump_force()
+
+## Función con la que se deja de subir por un salto.
+func do_jump_release() -> void:
+	velocity.y /= 2
+
+## Función con la que se calcula la fuerza a aplicar (velocidad inicial) para que el personaje salte.[br]
+## Se usa la fórmula v0=√2gh.
+func get_jump_force() -> float:
+	return sqrt(2 * gravity * jump_height_max) + 4
+
 ## Función que define la dirección en la que mira el personaje.[br]
 ## El parámetro [param _dir_face] recibe la dirección en la que se debe mirar.
 func set_dir_face(_dir_face : dirs_face) -> void:
@@ -72,6 +99,11 @@ func set_dir_face(_dir_face : dirs_face) -> void:
 func start_gravity() -> void:
 	_gravity_base_ = ProjectSettings.get_setting("physics/2d/default_gravity") * ProjectSettings.get_setting("physics/custom/pixels_per_meter")
 	gravity = _gravity_base_
+
+## Función con la que se puede inicializar la altura del salto.
+func start_jump_height_max(_jump_height_max : float) -> void:
+	_jump_height_max_base_ = _jump_height_max
+	jump_height_max = _jump_height_max_base_
 
 ## Función con la que se puede inicializar la velocidad en X.[br]
 ## El parámetro [param _speed_x] recibe la velocidad base del personaje.

@@ -3,6 +3,8 @@ class_name gmStateBase
 
 
 #region Vars
+## Define el nombre que identifica el estado.
+var name : StringName
 #endregion
 
 

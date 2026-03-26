@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="PlatformerGame"
+config/name="Platformer Game"
 config/version="2026.02.23.01"
 run/main_scene="uid://d1gmi40tbcxaq"
 config/features=PackedStringArray("4.6", "Forward Plus")
@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 GAME="*uid://d16jfh7k41j0g"
+BetterTerrain="*uid://c5mfnwvmladvv"
 
 [display]
 
@@ -26,6 +27,10 @@ window/size/viewport_width=1280
 window/size/viewport_height=640
 window/size/resizable=false
 window/stretch/mode="viewport"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/better-terrain/plugin.cfg")
 
 [input]
 
@@ -66,8 +71,7 @@ gm_B0={
 
 [physics]
 
-2d/default_gravity=9.800000000000182
-common/physics_interpolation=true
+2d/default_gravity=19.600000000000364
 custom/pixels_per_meter=16
 
 [rendering]

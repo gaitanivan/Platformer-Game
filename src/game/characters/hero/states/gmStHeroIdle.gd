@@ -19,15 +19,25 @@ func end() -> void:
 	# Terminar el tween de animación.
 	if _tween_animation_loop_:
 		_tween_animation_loop_.kill()
+	if _hero_.animated_sprite.animation_finished.is_connected(_play_animation_secondary_finished_):
+		_hero_.animated_sprite.animation_finished.disconnect(_play_animation_secondary_finished_)
 
 ## Función con la que se podrán ejecutar comandos para cuando el estado procese su funcionamiento.
 ## El parámetro [param _delta] recibe el tiempo en segundos transcurrido desde la última ejecución de esta función.
 func process(_delta : float) -> void:
+	# Cambiar de estado a Jump.
+	if to_jump(): return
 	# Cambiar de estado a Walk.
 	if to_walk(): return
+	# Cambiar de estado a Falling.
+	if to_falling(): return
 
 ## Función con la que se podrán ejecutar comandos para cuando el estado inicie su funcionamiento.
 func start() -> void:
+	# Inicializar valores.
+	name = "Idle"
+	_hero_.can_double_jump = true
+
 	# Definir animaciones de este estado.
 	animations.append("Idle_01")
 	animations.append("Idle_02")
@@ -52,8 +62,10 @@ func _play_animation_secondary_() -> void:
 	var __aux : int = randi_range(1, animations.size() - 1)
 	_hero_.animated_sprite.play(animations[__aux])
 	# Al terminar la animación secundaria, volver a la animación base.
-	_hero_.animated_sprite.animation_finished.connect(
-		func () -> void:
-			_play_animation_base_()
-	)
+	_hero_.animated_sprite.animation_finished.connect(_play_animation_secondary_finished_)
+
+## Función para recibir la señal de terminar la animación secundaria.
+func _play_animation_secondary_finished_() -> void:
+	_hero_.animated_sprite.animation_finished.disconnect(_play_animation_secondary_finished_)
+	_play_animation_base_()
 #endregion
