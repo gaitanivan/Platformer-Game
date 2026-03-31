@@ -12,6 +12,14 @@ enum dirs_face {
 
 ## Mantiene la referencia al AnimationPlayer del personaje.
 var animated_sprite : AnimatedSprite2D
+## Determina si el personaje puede hacer un impulso.
+var can_dash : bool :
+	get:
+		return can_dash_cooldown and can_dash_ground
+## Determina si ha pasado el tiempo de espera para que el personaje puede hacer un impulso.
+var can_dash_cooldown : bool = true
+## Determina si se ha tocado el suelo para que el personaje puede hacer un impulso.
+var can_dash_ground : bool = true
 ## Determina si el personaje puede hacer doble salto.
 var can_double_jump : bool
 ## Mantiene la referencia al CollisionShape2D del personaje.
@@ -31,6 +39,8 @@ var sm : gmStateMachineBase
 ## Mantiene el valor de la velocidad en X que usa el personaje.
 var speed_x : float
 
+## Temporizador para el tiempo que ha de pasar para que el personaje puede hacer un impulso.
+var _can_dash_cooldown_timer_ : Tween
 ## Mantiene el valor de la gravedad base que usa el personaje.
 var _gravity_base_ : float
 ## Mantiene el valor de la altura máxima que alcanza el personaje al saltar.
@@ -63,6 +73,9 @@ func _physics_process(_delta: float) -> void:
 		velocity.y = constant_velocity.y
 	else:
 		velocity.y += gravity * _delta
+	# Hacer que la velocidad de caida no supere el 1.5 de la gravedad actual.
+	if velocity.y >= gravity * 1.5:
+		velocity.y = gravity * 1.5
 	# Aplicar movimiento horizontal.
 	if constant_velocity.x != 0:
 		velocity.x = constant_velocity.x
@@ -75,6 +88,23 @@ func _physics_process(_delta: float) -> void:
 
 
 #region Functions
+## Función que inicia el conteo del tiempo de espera para permitir hacer un impulso después de haber hecho uno.[br]
+## El parámetro [param _now] recibe un valor para indicar si se debe restablecer de inmediato.[br]
+## Por defecto es [code]false[/code] y realiza el conteo.[br]
+## Si se pasa el valor [code]true[/code] no se realiza conteo y se restaura de inmediato.
+func dash_cooldown_timer(_now : bool = false) -> void:
+	# Siempre que se llame a esta función, detener el temporizador.
+	if _can_dash_cooldown_timer_:
+		_can_dash_cooldown_timer_.kill()
+	# Validar si se debe aplicar el cambio de inmediato.
+	if _now:
+		can_dash_cooldown = true
+		return
+	# Si llega aquí, realizar el conteo.
+	_can_dash_cooldown_timer_ = create_tween()
+	_can_dash_cooldown_timer_.tween_interval(1)
+	_can_dash_cooldown_timer_.tween_property(self, "can_dash_cooldown", true, 0)
+
 ## Función con la que se hace saltar al personaje.
 func do_jump() -> void:
 	velocity.y = -get_jump_force()

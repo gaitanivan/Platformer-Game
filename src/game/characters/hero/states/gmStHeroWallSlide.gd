@@ -25,6 +25,8 @@ func process(_delta : float) -> void:
 	# Cambiar de estado a Falling.
 	if (_hero_.dir_movement.x == 0 or not _hero_.is_on_wall()) \
 	and to_falling(): return
+	# Cambiar de estado a Dash.
+	if to_dash(): return
 	# Cambiar de estado a Walk.
 	if to_wall_jump(): return
 	# Cambiar de estado a Walk.

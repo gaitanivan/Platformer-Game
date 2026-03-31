@@ -25,7 +25,7 @@ func _physics_process(_delta: float) -> void:
 	jp_controller.process(_delta)
 	dir_movement = jp_controller.dir
 	super(_delta)
-	$Label.text = sm._current_state_.name
+	$Label.text = "%s" % sm.current_state.name
 #endregion
 
 

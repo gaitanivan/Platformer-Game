@@ -18,6 +18,14 @@ func _init(_hero : gmHero) -> void:
 
 
 #region Functions
+## Función que ayuda a saber si el heroe debe cambiar al estado Dash.
+func to_dash() -> bool:
+	# Determinar si el personaje se impulsa.
+	if _hero_.can_dash and _hero_.jp_controller.dash_just_pressed:
+		_hero_.sm.change_state(gmStHeroDash.new(_hero_))
+		return true
+	return false
+
 ## Función que ayuda a saber si el heroe debe cambiar al estado DoubleJump.
 func to_double_jump() -> bool:
 	# Determinar si el personaje salta.
@@ -50,6 +58,15 @@ func to_jump() -> bool:
 		return true
 	return false
 
+## Función que ayuda a saber si el heroe debe cambiar al estado Landing.[br]
+## El parámetro [param _previous_velocity_y] recibe el valor de la velocidad en Y que tenía el heroe.
+func to_landing(_previous_velocity_y : float) -> bool:
+	# Determinar si el personaje se llega al suelo muy rápido.
+	if _hero_.is_on_floor() and _previous_velocity_y >= _hero_.gravity:
+		_hero_.sm.change_state(gmStHeroLanding.new(_hero_))
+		return true
+	return false
+
 ## Función que ayuda a saber si el heroe debe cambiar al estado Walk.
 func to_walk() -> bool:
 	# Determinar si el personaje se mueve.
@@ -74,11 +91,9 @@ func to_wall_jump() -> bool:
 func to_wall_slide() -> bool:
 	# Determinar si el personaje está en una pared y el jugador está presionando a esa pared.
 	if not _hero_.is_on_floor() and _hero_.is_on_wall():
-		var __coll := _hero_.get_last_slide_collision()
-		if __coll:
-			var __coll_dir := -signf(__coll.get_normal().x)
-			if __coll_dir == _hero_.dir_movement.x:
-				_hero_.sm.change_state(gmStHeroWallSlide.new(_hero_))
-				return true
+		var __coll_dir := -signf(_hero_.get_wall_normal().x)
+		if __coll_dir == _hero_.dir_movement.x:
+			_hero_.sm.change_state(gmStHeroWallSlide.new(_hero_))
+			return true
 	return false
 #endregion

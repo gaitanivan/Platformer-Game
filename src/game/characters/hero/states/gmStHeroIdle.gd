@@ -25,6 +25,8 @@ func end() -> void:
 ## Función con la que se podrán ejecutar comandos para cuando el estado procese su funcionamiento.
 ## El parámetro [param _delta] recibe el tiempo en segundos transcurrido desde la última ejecución de esta función.
 func process(_delta : float) -> void:
+	# Cambiar de estado a Dash.
+	if to_dash(): return
 	# Cambiar de estado a Jump.
 	if to_jump(): return
 	# Cambiar de estado a Walk.
@@ -36,6 +38,7 @@ func process(_delta : float) -> void:
 func start() -> void:
 	# Inicializar valores.
 	name = "Idle"
+	_hero_.can_dash_ground = true
 	_hero_.can_double_jump = true
 
 	# Definir animaciones de este estado.

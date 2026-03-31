@@ -4,6 +4,8 @@ extends gmStHeroBase
 
 
 #region Vars
+## Determina la velocidad en Y (caida) que llevaba el personaje.
+var _previous_velocity_y_ : float
 #endregion
 
 
@@ -20,14 +22,21 @@ func end() -> void:
 ## Función con la que se podrán ejecutar comandos para cuando el estado procese su funcionamiento.
 ## El parámetro [param _delta] recibe el tiempo en segundos transcurrido desde la última ejecución de esta función.
 func process(_delta : float) -> void:
+	# Cambiar de estado a Dash.
+	if to_dash(): return
 	# Cambiar de estado a DoubleJump.
 	if to_double_jump(): return
+	# Cambiar de estado a Landing.
+	if to_landing(_previous_velocity_y_): return
 	# Cambiar de estado a Walk.
 	if to_walk(): return
 	# Cambiar de estado a WallSlide.
 	if to_wall_slide(): return
 	# Cambiar de estado a Idle.
 	if to_idle(): return
+
+	# Ir almacenando la velocidad que llevaba en Y.
+	_previous_velocity_y_ = _hero_.velocity.y
 
 ## Función con la que se podrán ejecutar comandos para cuando el estado inicie su funcionamiento.
 func start() -> void:

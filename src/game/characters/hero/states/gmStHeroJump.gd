@@ -23,6 +23,8 @@ func process(_delta : float) -> void:
 		_jump_released_ = true
 		_hero_.do_jump_release()
 
+	# Cambiar de estado a Dash.
+	if to_dash(): return
 	# Cambiar de estado a WallJump.
 	if to_wall_jump(): return
 	# Cambiar de estado a DoubleJump.

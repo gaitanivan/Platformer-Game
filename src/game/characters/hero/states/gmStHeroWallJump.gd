@@ -32,6 +32,8 @@ func process(_delta : float) -> void:
 	# Asignar la dirección a la que mira el personaje.
 	_hero_.set_dir_face(_dir_face_)
 
+	# Cambiar de estado a Dash.
+	if to_dash(): return
 	# Cambiar de estado a WallJump.
 	if to_wall_jump(): return
 	# Cambiar de estado a DoubleJump.
@@ -48,8 +50,7 @@ func start() -> void:
 	# Inicializar valores.
 	name = "WallJump"
 	# Determinar la dirección del salto.
-	var __coll := _hero_.get_last_slide_collision()
-	var __coll_dir := signf(__coll.get_normal().x) as int
+	var __coll_dir := signf(_hero_.get_wall_normal().x) as int
 	# Hacer que el heroe se mueva de forma constante en la dirección contraria a la pared desde la que salta.
 	_dir_face_ = __coll_dir as gmCharacterBase.dirs_face
 	_hero_.constant_velocity.x = _hero_._speed_x_base_ * __coll_dir

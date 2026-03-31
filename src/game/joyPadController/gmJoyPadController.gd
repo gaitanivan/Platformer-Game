@@ -3,6 +3,10 @@ class_name gmJoyPadController
 
 
 #region Vars
+## Indica si recien se presionó el botón de impulso.
+var dash_just_pressed : bool
+## Indica si se está presionando el botón de impulso.
+var dash_pressed : bool
 ## Indica la dirección que el jugador está marcando en su control.
 var dir : Vector2
 ## Indica si recien se presionó el botón de saltar.
@@ -24,4 +28,7 @@ func process(_delta: float) -> void:
 	# Verificar el botón de salto.
 	jump_just_pressed = Input.is_action_just_pressed("gm_B0")
 	jump_pressed = Input.is_action_pressed("gm_B0")
+	# Verificar el botón de impulso.
+	dash_just_pressed = Input.is_action_just_pressed("gm_B10")
+	dash_pressed = Input.is_action_pressed("gm_B10")
 #endregion
